@@ -28,7 +28,7 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.goals = require("./goalModel")(sequelize, DataTypes);
-// db.users = require("./userModel")(sequelize, DataTypes);
+db.users = require("./userModel")(sequelize, DataTypes);
 
 db.sequelize.sync({ force: false }).then(() => {
   console.log("MySQL Database Re-sync Done!".magenta.underline);
