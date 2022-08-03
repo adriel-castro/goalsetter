@@ -5,9 +5,7 @@ const asyncHandler = require("express-async-handler");
 
 const User = db.users;
 
-// @desc    Register new user
-// @route   POST /api/users
-// @access  Public
+// Register User
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -48,9 +46,7 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Authenticate a user
-// @route   POST /api/users/login
-// @access  Public
+// Login User
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -69,15 +65,9 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new Error("Invalid credentials!");
   }
 });
-
-// @desc    Get user data
-// @route   GET /api/users/me
-// @access  Public
 // Get User data
 const getUser = asyncHandler(async (req, res) => {
-  // res.status(200).json(req.user);
   const { id, name, email } = await User.findByPk(req.user.id);
-
   res.status(200).json({
     id,
     name,
@@ -88,12 +78,10 @@ const getUser = asyncHandler(async (req, res) => {
 // Generate JWT
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "1800", // 30 minutes
+    expiresIn: "30d",
+    // expiresIn: "86400", // 24 hours
+    // expiresIn: "1800", // 30 minutes
   });
 };
 
-module.exports = {
-  registerUser,
-  loginUser,
-  getUser,
-};
+module.exports = { registerUser, loginUser, getUser };
