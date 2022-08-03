@@ -5,6 +5,7 @@ const db = require("../models");
 const Goal = db.goals;
 const User = db.users;
 
+// Problem as of 8/3/22 1047pm req.user.id is undefined. we cannot decode the req.user in auth Middleware
 // Get all goals
 const getAllGoals = asyncHandler(async (req, res) => {
   const goals = await Goal.findAll({ where: { user: req.user.id } });

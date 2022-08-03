@@ -5,29 +5,31 @@ const db = require("../models");
 const User = db.users;
 
 const protect = asyncHandler(async (req, res, next) => {
+  const authHeader = req.headers.authorization;
   let token;
 
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    try {
-      // Get token from header
-      token = req.headers.authorization.split(" ")[1];
+  if (!authHeader && !authHeader.startsWith("Bearer")) {
+    return res
+      .status(401)
+      .json({ error: "Token not provided - User not allowed" });
+  }
 
-      // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  try {
+    // Get token from header
+    token = req.headers.authorization.split(" ")[1];
 
-      // Get user from the token
-      // req.user = await User.findByPk(decoded.id).select("-password");
-      req.user = decoded;
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      next();
-    } catch (error) {
-      console.log(error);
-      res.status(401);
-      throw new Error("Not Authorized!");
-    }
+    // Get user from the token
+    // req.user = await User.findByPk(decoded.id).select("-password");
+    req.user = decoded;
+
+    next();
+  } catch (error) {
+    console.log(error);
+    res.status(401);
+    throw new Error("Not Authorized!");
   }
 
   if (!token) {

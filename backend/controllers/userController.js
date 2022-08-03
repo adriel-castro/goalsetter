@@ -78,9 +78,9 @@ const getUser = asyncHandler(async (req, res) => {
 // Generate JWT
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
+    // expiresIn: "1800", // 30 minutes
     expiresIn: "30d",
     // expiresIn: "86400", // 24 hours
-    // expiresIn: "1800", // 30 minutes
   });
 };
 
