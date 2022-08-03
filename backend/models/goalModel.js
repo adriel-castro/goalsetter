@@ -6,8 +6,16 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
     },
-    // insert user Model reference
-
+    user: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        // This is a reference to another model
+        model: "users", // table_name
+        // This is the column name of the referenced model
+        key: "id",
+      },
+    },
     text: {
       type: DataTypes.STRING,
       allowNull: false,
